@@ -929,18 +929,36 @@ func (in *ServiceSpec) DeepEqual(other *ServiceSpec) bool {
 	if in.SessionAffinity != other.SessionAffinity {
 		return false
 	}
-	if in.ExternalTrafficPolicy != other.ExternalTrafficPolicy {
-		return false
-	}
-	if in.HealthCheckNodePort != other.HealthCheckNodePort {
-		return false
-	}
 	if (in.SessionAffinityConfig == nil) != (other.SessionAffinityConfig == nil) {
 		return false
 	} else if in.SessionAffinityConfig != nil {
 		if !in.SessionAffinityConfig.DeepEqual(other.SessionAffinityConfig) {
 			return false
 		}
+	}
+
+	if ((in.LoadBalancerSourceRanges != nil) && (other.LoadBalancerSourceRanges != nil)) || ((in.LoadBalancerSourceRanges == nil) != (other.LoadBalancerSourceRanges == nil)) {
+		in, other := &in.LoadBalancerSourceRanges, &other.LoadBalancerSourceRanges
+		if other == nil {
+			return false
+		}
+
+		if len(*in) != len(*other) {
+			return false
+		} else {
+			for i, inElement := range *in {
+				if inElement != (*other)[i] {
+					return false
+				}
+			}
+		}
+	}
+
+	if in.ExternalTrafficPolicy != other.ExternalTrafficPolicy {
+		return false
+	}
+	if in.HealthCheckNodePort != other.HealthCheckNodePort {
+		return false
 	}
 
 	return true
