@@ -147,6 +147,12 @@ __revalidate_data(struct __ctx_buff *ctx, void **data_, void **data_end_,
 #define revalidate_data_first(ctx, data, data_end, ip)			\
 	__revalidate_data(ctx, data, data_end, (void **)ip, sizeof(**ip), true)
 
+/* revalidate_data_with_pull() does the same as revalidate_data_first(), except
+ * that the skb pulling is controlled with the "pull" parameter.
+ */
+#define revalidate_data_with_pull(ctx, data, data_end, ip, pull)	\
+	__revalidate_data(ctx, data, data_end, (void **)ip, sizeof(**ip), pull)
+
 /* revalidate_data() initializes the provided pointers from the ctx.
  * Returns true if 'ctx' is long enough for an IP header of the provided type,
  * false otherwise.
